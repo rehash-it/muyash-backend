@@ -1,0 +1,62 @@
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: muyash-backend
+spec:
+  replicas: 2
+  template:
+    metadata:
+      name: backend
+      labels:
+        app: muyash
+        role: backend
+        env: production
+    spec:
+      containers:
+      - name: backend
+        image: gcr.io/cloud-solutions-images/gceme:1.0.0
+        env:
+          - name: DATABASE_URL
+            valueFrom:
+              secretKeyRef:
+                name: muyash-api-secret
+                key: DATABASE_URL
+          - name: FACEBOOK_APP_ID
+            valueFrom:
+              secretKeyRef:
+                name: muyash-api-secret
+                key: FACEBOOK_APP_ID
+          - name: FACEBOOK_APP_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: muyash-api-secret
+                key: FACEBOOK_APP_SECRET
+          - name: JWT_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: muyash-api-secret
+                key: JWT_SECRET
+          - name: JWT_PRIVATE_KEY
+            valueFrom:
+              secretKeyRef:
+                name: muyash-api-secret
+                key: JWT_PRIVATE_KEY
+          - name: GCP_STORAGE_CREDENTIALS
+            valueFrom:
+              secretKeyRef:
+                name: muyash-storage-credential
+                key: muyash-storage-key.json
+          - name: NODE_ENV
+            value: production
+        resources:
+          limits:
+            memory: "500Mi"
+            cpu: "100m"
+        imagePullPolicy: Always
+        readinessProbe:
+          httpGet:
+            path: /api/recipes
+            port: 3000
+        ports:
+        - name: backend
+          containerPort: 3000

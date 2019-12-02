@@ -1,0 +1,11 @@
+module.exports = {
+    facebookAppID : '424848768144789',
+    facebookAppSecret : '1b078b877d57330b57d83d02021299ca',
+    jwtPrivateKey : process.env.JWT_SECRET||'dsfsdfkasdjfkasdhfkashdflashfdfsdaf',
+    dbhost:process.env.DATABASE_URL||'localhost',
+    dbport:process.env.dbport||'27017',
+    dbname:process.env.DATABASE_NAME||'muyash',
+    port:process.env.PORT || 3000
+    // callbackUrl : 'http://localhost:3000/auth/facebook/callback'
+  }
+  // mongodb://<dbuser>:<dbpassword>@ds211268.mlab.com:11268/muyash-dev
